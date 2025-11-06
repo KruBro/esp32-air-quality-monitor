@@ -11,7 +11,7 @@
 ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝
 
 
-
+Project Video Link Youtube: https://youtube.com/shorts/vCJ57eRC9Sw?si=mubItcBHRJwJyPQ4
 
 
      Indoor Air Quality Monitor — ESP32 Firmware
