@@ -1,162 +1,248 @@
-🏠 Indoor Air Quality Monitor — ESP32 Firmware
+---
 
+# 🏠 Indoor Air Quality Monitor — ESP32 Firmware
 
+### Optimized Firmware v6.0
 
-
+```
 ██╗███╗   ██╗██████╗  ██████╗  ██████╗ ██████╗ 
 ██║████╗  ██║██╔══██╗██╔═══██╗██╔════╝ ██╔══██╗
 ██║██╔██╗ ██║██████╔╝██║   ██║██║  ███╗██████╔╝
 ██║██║╚██╗██║██╔══██╗██║   ██║██║   ██║██╔══██╗
 ██║██║ ╚████║██║  ██║╚██████╔╝╚██████╔╝██║  ██║
 ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝
+```
 
+🎥 **Project Demo Video:**
+[https://youtube.com/shorts/vCJ57eRC9Sw?si=mubItcBHRJwJyPQ4](https://youtube.com/shorts/vCJ57eRC9Sw?si=mubItcBHRJwJyPQ4)
 
-Project Video Link Youtube: https://youtube.com/shorts/vCJ57eRC9Sw?si=mubItcBHRJwJyPQ4
+---
 
+## ✅ Overview
 
-     Indoor Air Quality Monitor — ESP32 Firmware
+This repository contains the **v6.0 optimized ESP32 firmware** for an advanced Indoor Air Quality Monitoring system featuring:
 
+* **BME680 Sensor** (Temperature, Humidity, Pressure, VOC)
+* **Sharp GP2Y Dust Sensor**
+* **SSD1306 OLED Display**
+* **High-performance Async Web Server**
+* **Secure WebSocket Authentication**
+* **OTA firmware updates**
+* **mDNS discovery**
+* **Optimized performance, memory, and stability**
 
-Firmware for an ESP32-powered IoT indoor air monitoring system using:
+Everything is fully non-blocking, secure, and optimized for long-term operation.
 
-✅ BME680 (Temp, Humidity, Pressure, VOC)
-✅ Sharp GP2Y Dust Sensor
-✅ SSD1306 OLED
-✅ AsyncWebServer + WebSocket
-✅ Secure authentication
-✅ OTA Updates
-✅ mDNS
+---
 
-📦 Project Structure
+## 📦 Project Structure
+
+```
 indoor_air_quality/
 │── src/
-│   └── main.cpp
+│   └── main.cpp                 # v6.0 optimized firmware
 │── include/
-│   ├── secrets.h          # Not committed
-│   ├── secrets.h.example  # Template
-│   └── token.h
+│   ├── secrets.h                # Your credentials (ignored)
+│   ├── secrets.h.example        # Template
+│   └── token.h                  # WebSocket token definition
 │── .gitignore
 │── platformio.ini
 └── README.md
+```
 
-🚀 Features Snapshot
+---
 
-Real-time WebSocket sensor streaming
+## 🚀 Feature Highlights (Firmware v6.0)
 
-OLED display output
+✅ Fully optimized BME680 + GP2Y sensor reading
+✅ Dust smoothing (EMA) for stability
+✅ Real-time WebSocket streaming
+✅ Secure bearer-token authentication
+✅ OTA update support
+✅ mDNS (`air-quality.local`)
+✅ Async TCP/WebSocket server
+✅ Rate limiting for attackers
+✅ Clean system state + watchdog-like resilience
+✅ Optimized memory usage
+✅ Optimized I2C + ADC performance
+✅ OLED live display
 
-Secure bearer-token authentication
+---
 
-Over-the-Air firmware updates
+## 🔧 Hardware Overview
 
-REST API for diagnostics
+(Same as previous version, kept concise)
 
-mDNS support (air-quality.local)
+* **ESP32 Dev Module**
+* **BME680 I2C** (3.3V)
+* **Sharp GP2Y Dust Sensor**
 
-Non-blocking async server
+  * LED Pin → GPIO 27
+  * ADC Output → GPIO 34
+* **SSD1306 OLED** (I2C)
+* **5V supply recommended for dust sensor**
 
-🔧 Hardware Connections
+---
 
-(unchanged; kept concise)
+## ✅ Setup Guide
 
-✅ Setup Guide
+### 1. Clone the repository
 
-A complete step-by-step process for users.
-
-✅ 1. Clone the repository
+```bash
 git clone https://github.com/<user>/<repo>.git
 cd indoor_air_quality
+```
 
-✅ 2. Install PlatformIO
+### 2. Install PlatformIO
 
 VS Code → Extensions → PlatformIO IDE
 
-✅ 3. Create your secrets file
+### 3. Create your secrets file
 
-Copy:
+Copy template:
 
-include/secrets.h.example  →  include/secrets.h
-
+```
+include/secrets.h.example → include/secrets.h
+```
 
 Edit:
 
-#define WIFI_SSID       "YourWiFi"
-#define WIFI_PASSWORD   "Password123"
-#define OTA_PASSWORD    "mysuperpassword"
-#define DEVICE_HOSTNAME "air-quality"
+```c
+#define WIFI_SSID        "YourWiFi"
+#define WIFI_PASSWORD    "Password123"
+#define OTA_PASSWORD     "mysuperpassword"
+#define DEVICE_HOSTNAME  "air-quality"
+```
 
+⚠️ **Do not commit secrets.h**
 
-⚠️ Do NOT commit secrets.h.
+---
 
-✅ 4. Configure WebSocket token
+### 4. Configure WebSocket Token
 
-Edit include/token.h:
+Edit:
 
-#define WS_BEARER_TOKEN "your_64byte_token_here"
+```
+include/token.h
+```
 
+Example:
 
-React frontend must use the SAME token.
+```c
+#define WS_BEARER_TOKEN "your_64byte_secure_token"
+```
 
-✅ 5. Assign Static IP to ESP32
+Your frontend **must** use the same token.
 
-Required for OTA.
+---
 
-Example used:
+### 5. (Optional) Assign Static IP
 
+Used for stable WebSocket + OTA.
+
+Example used in testing:
+
+```
 192.168.1.5
+```
 
-✅ 6. Build & Upload (USB the first time)
+---
+
+### 6. Build & Upload (first time via USB)
+
+```bash
 pio run --target upload
+```
 
-✅ 7. OTA Upload (Next time)
+---
 
-ESP32 must be online.
+### 7. OTA Upload (any time ESP32 is online)
 
+```bash
 pio run --target upload
+```
 
+The firmware already includes:
 
-Works because upload_protocol = espota
+```ini
+upload_protocol = espota
+```
 
-✅ 8. Web Dashboard Setup (React)
+---
 
-Set in frontend:
+### ✅ REST API Endpoints
 
-const ESP32_WEBSOCKET_URL = "ws://192.168.1.5/ws";
-const WS_BEARER_TOKEN = "your_token";
+#### `/status`
 
-🔐 REST API
+Requires:
 
-✅ /status (requires bearer token)
+```
+Authorization: Bearer <WS_BEARER_TOKEN>
+```
 
-📊 WebSocket Format
+Returns system + sensor diagnostics.
 
-Sent from ESP32:
+#### `/health`
 
+No auth required.
+Returns:
+
+```
+OK
+```
+
+---
+
+## 📊 WebSocket Data Format
+
+ESP32 sends this packet every 2 seconds:
+
+```json
 {
   "temp": 24.5,
   "hum": 63.2,
   "pres": 1005.3,
-  "gas": 21030,
+  "gas": 21.03,
+  "dust": 180,
   "iaq": 51,
-  "dust": 380
+  "ts": 12345678
 }
+```
 
-🧪 Testing the Dust Sensor (GP2Y)
+---
 
-Needs stable 5V
+## 🧪 GP2Y Dust Sensor Notes
 
-LED pin must be pulsed
+* Requires stable **5V**
+* Uses an **infrared LED pulse timing cycle**
+* ADC reading on GPIO 34 with 11 dB attenuation
+* Output depends on:
 
-ADC pin = GPIO 34/35/36
+  * Clean airflow
+  * No dust accumulated inside sensor cavity
+  * Proper timing (already optimized)
 
-Should not be dirty or blocked
+---
 
-Prefers clean airflow
+## 🛡 Security Summary (Firmware v6.0)
 
-📄 License
+* Secure WebSocket token authentication
+* REST API token validation
+* OTA password hashing
+* Rate limiting per-client
+* Private key/material stored in header files but ignored via .gitignore
+* No plaintext secrets stored in repo
+
+---
+
+## 📄 License
 
 MIT License.
 
-🙌 Contributions
+---
 
-PRs and issues welcome!
+## 🙌 Contributions
+
+PRs, issues, and suggestions are welcome.
+
+---
